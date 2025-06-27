@@ -503,3 +503,44 @@ function renderAll(){
 
 // Initial render
 renderAll();
+function renderReports() {
+  const reportsList = document.getElementById("reports-list");
+  reportsList.innerHTML = "";
+
+  if (tasks.length === 0) {
+    reportsList.innerHTML = "<li>No reports available.</li>";
+    return;
+  }
+
+  tasks.forEach((task) => {
+    let li = document.createElement("li");
+    li.textContent = `${task.title} - Status: ${task.status} - Assigned to: ${task.assignee}`;
+    reportsList.appendChild(li);
+  });
+}
+function generatePDFReport() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  doc.setFontSize(18);
+  doc.text("GAS PR Management System - Task Report", 10, 20);
+
+  doc.setFontSize(12);
+  let y = 30;
+
+  if (tasks.length === 0) {
+    doc.text("No tasks available.", 10, y);
+  } else {
+    tasks.forEach((task, i) => {
+      const line = `${i + 1}. ${task.title} - ${task.status} - ${task.assignee}`;
+      doc.text(line, 10, y);
+      y += 10;
+      if (y > 280) {
+        doc.addPage();
+        y = 20;
+      }
+    });
+  }
+
+  doc.save("pr_tasks_report.pdf");
+}

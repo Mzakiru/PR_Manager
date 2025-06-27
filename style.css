@@ -226,3 +226,15 @@ footer {
   font-weight: 600;
   margin-top: 2rem;
 }
+.primary-btn {
+  background-color: #2e7d32;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+.primary-btn:hover {
+  background-color: #1b5e20;
+}

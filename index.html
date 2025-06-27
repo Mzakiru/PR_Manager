@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>GAS PR Management System</title>
 <link rel="stylesheet" href="style.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 <header>
@@ -19,6 +21,13 @@
   <button class="nav-btn" data-section="reports">Reports & News</button>
   <button class="nav-btn" data-section="challenges">Challenges</button>
   <button class="nav-btn" data-section="cases">Cases</button>
+  <section id="reports-section">
+  <h2>Reports</h2>
+  <button onclick="generatePDFReport()" class="primary-btn">Generate PDF Report</button>
+  <ul id="reports-list">
+    <!-- list of reports/tasks will appear here -->
+  </ul>
+</section>
   <button class="nav-btn" data-section="alumni">Alumni</button>
   <button class="nav-btn" data-section="users">Users</button>
 </nav>
