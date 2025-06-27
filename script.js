@@ -1,3 +1,5 @@
+const GOOGLE_API = " https://script.google.com/macros/s/AKfycbxwO45itW4qEfRinjvhKSAFNMS6zcEHfWAO0_p59WejiKUbYhSIz_mlP5RzuFz76KJt/exec"
+let tasks = [];
 // Helper to select elements
 const $ = (id) => document.getElementById(id);
 
