@@ -1,3 +1,4 @@
+const API_BASE = " https://script.google.com/macros/s/AKfycbx6v8uxBd_CcEuYQzetXxF4oaEiIhkbiYof4nVnRIYyVtTgYqt3C0hvX3Hv2OAAwyV7vg/exec"
 // script.js
 // --------- LOGIN FUNCTION ----------
 function login() {
@@ -179,3 +180,49 @@ window.onload = function () {
   loadEvents();
   displayGallery();
 };
+function saveNews() {
+  const newsText = document.getElementById("newsText").value;
+
+  if (!newsText) {
+    alert("Please write something!");
+    return;
+  }
+
+  fetch(API_BASE, {
+    method: "POST",
+    body: JSON.stringify({
+      content: newsText,
+      type: "News"
+    })
+  })
+  .then(() => {
+    document.getElementById("newsText").value = ""; // Clear input box
+    loadNews(); // Reload news list after saving
+  })
+  .catch(err => {
+    alert("Failed to save news!");
+    console.error(err);
+  });
+}
+function loadNews() {
+  fetch(API_BASE)
+    .then(res => res.json())
+    .then(data => {
+      const newsList = document.getElementById("newsList");
+      newsList.innerHTML = ""; // Clear existing news items
+
+      // Filter data to only include items where type === "News"
+      const newsItems = data.filter(item => item.type === "News");
+
+      // Add each news item as a list element
+      newsItems.forEach(n => {
+        const li = document.createElement("li");
+        li.innerText = `${n.content} (${new Date(n.date).toLocaleDateString()})`;
+        newsList.appendChild(li);
+      });
+    })
+    .catch(err => {
+      alert("Failed to load news!");
+      console.error(err);
+    });
+}

@@ -58,5 +58,21 @@
 </section>
 
   <script src="script.js"></script>
+  <section id="news" class="section">
+  <h2>News & Announcements</h2>
+  <textarea id="newsText" placeholder="Write news here..."></textarea>
+  <button onclick="saveNews()">Save News</button>
+  <ul id="newsList"></ul>
+</section>
+
+<!-- At the bottom of the page before closing </body> tag -->
+<script src="script.js"></script>
+<script>
+  // Load news automatically when the page loads
+  window.onload = function () {
+    loadNews();
+  };
+</script>
+
 </body>
 </html>
