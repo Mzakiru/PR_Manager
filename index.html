@@ -3,60 +3,320 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>GAS PR Task Manager</title>
+<title>School PR Work Management System</title>
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="app-container">
-    <header>
-      <h1>GAS PR Task Manager</h1>
-      <input
-        type="search"
-        id="search-input"
-        placeholder="Search tasks..."
-        aria-label="Search tasks"
-      />
-    </header>
-
-    <section class="task-form-section">
-      <form id="task-form" autocomplete="off">
-        <input
-          type="text"
-          id="task-title"
-          placeholder="Task title"
-          required
-        />
-        <textarea
-          id="task-desc"
-          placeholder="Task description (optional)"
-          rows="2"
-        ></textarea>
-        <select id="task-priority" required>
-          <option value="" disabled selected>Priority</option>
-          <option value="Low">Low</option>
-          <option value="Medium">Medium</option>
-          <option value="High">High</option>
+  <div id="app">
+    <!-- LOGIN -->
+    <section id="login-section" class="centered-section">
+      <h2>Login to PR Work System</h2>
+      <form id="login-form">
+        <input type="text" id="username" placeholder="Username" required />
+        <input type="password" id="password" placeholder="Password" required />
+        <select id="role-select" required>
+          <option value="" disabled selected>Select Role</option>
+          <option value="admin">Admin</option>
+          <option value="pr_officer">PR Officer</option>
+          <option value="event_manager">Event Manager</option>
         </select>
-        <input type="date" id="task-due-date" required />
-        <button type="submit">Add Task</button>
+        <button type="submit">Login</button>
       </form>
+      <div id="login-error" class="error-msg"></div>
     </section>
 
-    <section class="filter-section">
-      <button data-filter="all" class="filter-btn active">All Tasks</button>
-      <button data-filter="pending" class="filter-btn">Pending</button>
-      <button data-filter="completed" class="filter-btn">Completed</button>
-    </section>
+    <!-- MAIN APP -->
+    <section id="main-app" class="hidden">
+      <nav id="sidebar">
+        <h1>PR Management</h1>
+        <ul>
+          <li data-page="dashboard" class="active">Dashboard</li>
+          <li data-page="tasks">Tasks</li>
+          <li data-page="events">Events</li>
+          <li data-page="calendar">Calendar</li>
+          <li data-page="contacts">Contacts</li>
+          <li data-page="reports">Reports & News</li>
+          <li data-page="challenges">Challenges & Suggestions</li>
+          <li data-page="notifications">Notifications</li>
+          <li data-page="cases">Manage Cases</li>
+          <li data-page="alumni">Alumni Database</li>
+          <li data-page="users" class="admin-only">User Management</li>
+          <li id="logout-btn">Logout</li>
+        </ul>
+      </nav>
 
-    <section class="tasks-section">
-      <ul id="task-list"></ul>
-    </section>
+      <main id="content">
+        <!-- Dashboard -->
+        <section id="page-dashboard" class="page active">
+          <h2>Dashboard Overview</h2>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <h3>Total Tasks</h3>
+              <p id="dash-total-tasks">0</p>
+            </div>
+            <div class="stat-card">
+              <h3>In Progress</h3>
+              <p id="dash-in-progress">0</p>
+            </div>
+            <div class="stat-card">
+              <h3>Completed</h3>
+              <p id="dash-completed">0</p>
+            </div>
+            <div class="stat-card">
+              <h3>Upcoming Events</h3>
+              <ul id="dash-upcoming-events"></ul>
+            </div>
+            <div class="stat-card">
+              <h3>Important Notifications</h3>
+              <ul id="dash-notifications"></ul>
+            </div>
+            <div class="stat-card">
+              <h3>PR Communications Sent</h3>
+              <p id="dash-pr-communications">0</p>
+            </div>
+            <div class="stat-card">
+              <h3>Reports Made</h3>
+              <p id="dash-reports-made">0</p>
+            </div>
+          </div>
+        </section>
 
-    <footer>
-      <p>Designed by Mzakiru Ramadhan (IT Green Acres Schools)</p>
-    </footer>
+        <!-- Tasks -->
+        <section id="page-tasks" class="page">
+          <h2>Manage Tasks</h2>
+          <button id="add-task-btn">+ Add Task</button>
+
+          <div class="filters-row">
+            <select id="task-filter-status">
+              <option value="all">All Status</option>
+              <option value="pending">Pending</option>
+              <option value="in_progress">In Progress</option>
+              <option value="completed">Completed</option>
+            </select>
+            <input type="date" id="task-filter-date" />
+            <input type="text" id="task-filter-assignee" placeholder="Filter by Assigned Person" />
+            <button id="task-filter-clear">Clear Filters</button>
+          </div>
+
+          <ul id="task-list"></ul>
+        </section>
+
+        <!-- Add/Edit Task Modal -->
+        <div id="task-modal" class="modal hidden">
+          <div class="modal-content">
+            <h3 id="task-modal-title">Add Task</h3>
+            <form id="task-form">
+              <input type="text" id="task-title" placeholder="Title" required />
+              <textarea id="task-desc" placeholder="Description"></textarea>
+              <label>Start Date: <input type="date" id="task-start-date" required /></label>
+              <label>Due Date: <input type="date" id="task-due-date" required /></label>
+              <input type="text" id="task-assigned" placeholder="Assigned Person" required />
+              <select id="task-status" required>
+                <option value="pending">Pending</option>
+                <option value="in_progress">In Progress</option>
+                <option value="completed">Completed</option>
+              </select>
+              <select id="task-priority" required>
+                <option value="low">Low Priority</option>
+                <option value="medium" selected>Medium Priority</option>
+                <option value="high">High Priority</option>
+              </select>
+              <div class="modal-actions">
+                <button type="submit">Save</button>
+                <button type="button" id="task-cancel-btn">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Events -->
+        <section id="page-events" class="page">
+          <h2>Manage Events</h2>
+          <button id="add-event-btn">+ Add Event</button>
+
+          <ul id="event-list"></ul>
+        </section>
+
+        <!-- Add/Edit Event Modal -->
+        <div id="event-modal" class="modal hidden">
+          <div class="modal-content">
+            <h3 id="event-modal-title">Add Event</h3>
+            <form id="event-form">
+              <input type="text" id="event-title" placeholder="Event Title" required />
+              <input type="date" id="event-date" required />
+              <input type="text" id="event-location" placeholder="Location" />
+              <input type="text" id="event-participants" placeholder="Participants (comma-separated)" />
+              <div class="modal-actions">
+                <button type="submit">Save</button>
+                <button type="button" id="event-cancel-btn">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Calendar -->
+        <section id="page-calendar" class="page">
+          <h2>Calendar View</h2>
+          <div id="calendar"></div>
+        </section>
+
+        <!-- Contacts -->
+        <section id="page-contacts" class="page">
+          <h2>Contacts Management</h2>
+          <button id="add-contact-btn">+ Add Contact</button>
+          <ul id="contact-list"></ul>
+        </section>
+
+        <!-- Add/Edit Contact Modal -->
+        <div id="contact-modal" class="modal hidden">
+          <div class="modal-content">
+            <h3 id="contact-modal-title">Add Contact</h3>
+            <form id="contact-form">
+              <input type="text" id="contact-name" placeholder="Name" required />
+              <input type="tel" id="contact-phone" placeholder="Phone Number" />
+              <input type="email" id="contact-email" placeholder="Email" />
+              <input type="text" id="contact-address" placeholder="Address" />
+              <div class="modal-actions">
+                <button type="submit">Save</button>
+                <button type="button" id="contact-cancel-btn">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Reports & News -->
+        <section id="page-reports" class="page">
+          <h2>Reports & News</h2>
+          <button id="add-report-btn">+ Add Report/News</button>
+          <ul id="report-list"></ul>
+        </section>
+
+        <!-- Add/Edit Report Modal -->
+        <div id="report-modal" class="modal hidden">
+          <div class="modal-content">
+            <h3 id="report-modal-title">Add Report / News</h3>
+            <form id="report-form">
+              <input type="text" id="report-title" placeholder="Title" required />
+              <textarea id="report-content" placeholder="Content" required></textarea>
+              <input type="date" id="report-date" required />
+              <div class="modal-actions">
+                <button type="submit">Save</button>
+                <button type="button" id="report-cancel-btn">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Challenges & Suggestions -->
+        <section id="page-challenges" class="page">
+          <h2>Challenges & Suggestions</h2>
+          <button id="add-challenge-btn">+ Add Challenge/Suggestion</button>
+          <ul id="challenge-list"></ul>
+        </section>
+
+        <!-- Add/Edit Challenge Modal -->
+        <div id="challenge-modal" class="modal hidden">
+          <div class="modal-content">
+            <h3 id="challenge-modal-title">Add Challenge / Suggestion</h3>
+            <form id="challenge-form">
+              <input type="text" id="challenge-title" placeholder="Title" required />
+              <textarea id="challenge-content" placeholder="Description" required></textarea>
+              <input type="date" id="challenge-date" required />
+              <div class="modal-actions">
+                <button type="submit">Save</button>
+                <button type="button" id="challenge-cancel-btn">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Notifications -->
+        <section id="page-notifications" class="page">
+          <h2>Notifications</h2>
+          <ul id="notification-list"></ul>
+        </section>
+
+        <!-- Cases Management -->
+        <section id="page-cases" class="page">
+          <h2>Manage Cases</h2>
+          <button id="add-case-btn">+ Add Case</button>
+          <ul id="case-list"></ul>
+        </section>
+
+        <!-- Add/Edit Case Modal -->
+        <div id="case-modal" class="modal hidden">
+          <div class="modal-content">
+            <h3 id="case-modal-title">Add Case</h3>
+            <form id="case-form">
+              <input type="text" id="case-title" placeholder="Case Title" required />
+              <textarea id="case-desc" placeholder="Description" required></textarea>
+              <input type="date" id="case-date" required />
+              <select id="case-status" required>
+                <option value="open">Open</option>
+                <option value="in_progress">In Progress</option>
+                <option value="closed">Closed</option>
+              </select>
+              <div class="modal-actions">
+                <button type="submit">Save</button>
+                <button type="button" id="case-cancel-btn">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Alumni Database -->
+        <section id="page-alumni" class="page">
+          <h2>Alumni Database</h2>
+          <button id="add-alumni-btn">+ Add Alumni Member</button>
+          <ul id="alumni-list"></ul>
+        </section>
+
+        <!-- Add/Edit Alumni Modal -->
+        <div id="alumni-modal" class="modal hidden">
+          <div class="modal-content">
+            <h3 id="alumni-modal-title">Add Alumni Member</h3>
+            <form id="alumni-form">
+              <input type="text" id="alumni-name" placeholder="Full Name" required />
+              <input type="number" id="alumni-year" placeholder="Graduation Year" min="1900" max="2100" required />
+              <input type="tel" id="alumni-phone" placeholder="Phone Number" />
+              <div class="modal-actions">
+                <button type="submit">Save</button>
+                <button type="button" id="alumni-cancel-btn">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- User Management (Admin Only) -->
+        <section id="page-users" class="page admin-only">
+          <h2>User Management</h2>
+          <button id="add-user-btn">+ Add User</button>
+          <ul id="user-list"></ul>
+        </section>
+
+        <!-- Add/Edit User Modal -->
+        <div id="user-modal" class="modal hidden">
+          <div class="modal-content">
+            <h3 id="user-modal-title">Add User</h3>
+            <form id="user-form">
+              <input type="text" id="user-username" placeholder="Username" required />
+              <input type="password" id="user-password" placeholder="Password" required />
+              <select id="user-role" required>
+                <option value="admin">Admin</option>
+                <option value="pr_officer">PR Officer</option>
+                <option value="event_manager">Event Manager</option>
+              </select>
+              <div class="modal-actions">
+                <button type="submit">Save</button>
+                <button type="button" id="user-cancel-btn">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </main>
+    </section>
   </div>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
