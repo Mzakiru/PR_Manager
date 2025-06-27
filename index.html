@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GAS PR Task Manager</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-container">
+    <header>
+      <h1>GAS PR Task Manager</h1>
+      <input
+        type="search"
+        id="search-input"
+        placeholder="Search tasks..."
+        aria-label="Search tasks"
+      />
+    </header>
+
+    <section class="task-form-section">
+      <form id="task-form" autocomplete="off">
+        <input
+          type="text"
+          id="task-title"
+          placeholder="Task title"
+          required
+        />
+        <textarea
+          id="task-desc"
+          placeholder="Task description (optional)"
+          rows="2"
+        ></textarea>
+        <select id="task-priority" required>
+          <option value="" disabled selected>Priority</option>
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+        </select>
+        <input type="date" id="task-due-date" required />
+        <button type="submit">Add Task</button>
+      </form>
+    </section>
+
+    <section class="filter-section">
+      <button data-filter="all" class="filter-btn active">All Tasks</button>
+      <button data-filter="pending" class="filter-btn">Pending</button>
+      <button data-filter="completed" class="filter-btn">Completed</button>
+    </section>
+
+    <section class="tasks-section">
+      <ul id="task-list"></ul>
+    </section>
+
+    <footer>
+      <p>Designed by Mzakiru Ramadhan (IT Green Acres Schools)</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
