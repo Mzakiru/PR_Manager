@@ -1,4 +1,4 @@
-const API_BASE = "https://script.google.com/macros/s/AKfycbx6v8uxBd_CcEuYQzetXxF4oaEiIhkbiYof4nVnRIYyVtTgYqt3C0hvX3Hv2OAAwyV7vg/exec";
+const API_BASE = "https://script.google.com/macros/s/AKfycbxex6yKiCyPD_Zac3xL-dU_BC7hqHnL5QrN7ebuprov/dev";
 
 // ---------- LOGIN FUNCTION ----------
 function login() {
