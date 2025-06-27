@@ -1,0 +1,62 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>School PR Manager</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<body>
+  <div id="loginPage">
+    <h2>🔐 PR Officer Login</h2>
+    <input type="text" id="username" placeholder="Enter username" />
+    <input type="password" id="password" placeholder="Enter password" />
+    <button onclick="login()">Login</button>
+  </div>
+
+  <div id="mainSystem" style="display:none">
+    <!-- Your existing PR system: nav, sections, etc. -->
+  </div>
+</body>
+  <h1>🎓 School PR Management System</h1>
+
+  <nav>
+    <button onclick="showSection('news')">📢 News</button>
+    <button onclick="showSection('events')">📅 Events</button>
+    <button onclick="showSection('gallery')">🖼️ Gallery</button>
+    <button onclick="showSection('reports')">📄 Reports</button>
+  </nav>
+
+  <section id="news" class="section">
+  <h2>News & Announcements</h2>
+  <textarea id="newsText" placeholder="Write news here..."></textarea>
+  <button onclick="saveNews()">Save News</button>
+  <ul id="newsList"></ul>
+</section>
+
+  <section id="events" class="section" style="display:none">
+  <h2>Upcoming Events</h2>
+  <input type="text" id="eventTitle" placeholder="Event Title" />
+  <input type="date" id="eventDate" />
+  <button onclick="saveEvent()">Save Event</button>
+  <ul id="eventList"></ul>
+</section>
+
+  <section id="gallery" class="section" style="display:none">
+  <h2>Photo Gallery</h2>
+  <input type="file" id="imageInput" accept="image/*" multiple />
+  <button onclick="uploadImages()">Upload</button>
+  <div id="galleryDisplay" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px;"></div>
+</section>
+
+  <section id="reports" class="section" style="display:none">
+  <h2>📄 PR Summary Report</h2>
+  <button onclick="generateReport()">Generate Report</button>
+  <button onclick="downloadReport()">Download as PDF</button>
+  <div id="reportOutput" style="margin-top: 20px; background: #f0f0f0; padding: 15px; border-radius: 10px;"></div>
+</section>
+
+  <script src="script.js"></script>
+</body>
+</html>
